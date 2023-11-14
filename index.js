@@ -5,7 +5,7 @@ const app = express();
 
 // Set up a headless websocket server that prints any
 // events that come in.
-app.get('/ws',(req,res)=>{
+
 const wsServer = new ws.Server({noServer:true});
   // console.log(wsServer);/
 wsServer.on("connection", (socket) => {
@@ -13,15 +13,15 @@ wsServer.on("connection", (socket) => {
 
   socket.on("message",(message) => {
     console.log(message +'');
-    for (let i = 0; i <10; i++) {
-      socket.send("message+ testconn ");
+    for (let i = 0; i <3; i++) {
+      socket.send("okk")
     }
   });
 })
 
-res.sendStatus(200).end()
+
   // socket.on()
-});
+
 // wsServer.on('message', sc =>{
 //     console.log({sc});
 // sc.send('test')
