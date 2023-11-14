@@ -8,8 +8,11 @@ const app = express();
 const wsServer = new ws.Server({ noServer: true });
 wsServer.on('connection', socket => {
     console.log('connected ');
-  socket.on('message', message => console.log(message));
+  socket.on('message', message =>{
+    console.log(message);
+  socket.send(message)
 });
+})
 
 // `server` is a vanilla Node.js HTTP server, so use
 // the same ws upgrade process described here:
