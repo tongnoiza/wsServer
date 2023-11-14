@@ -20,16 +20,34 @@
 //   });
 // });
 
-import { WebSocketServer } from 'ws';
+// import { WebSocketServer } from 'ws';
 
-const wss = new WebSocketServer({ port: 5000 });
+// const wss = new WebSocketServer({ port: 5000 });
 
-wss.on('connection', function connection(ws) {
-  ws.on('error', console.error);
+// wss.on('connection', function connection(ws) {
+//   ws.on('error', console.error);
 
-  ws.on('message', function message(data) {
-    console.log('received: %s', data);
+//   ws.on('message', function message(data) {
+//     console.log('received: %s', data);
+//   });
+
+//   ws.send('something');
+// });
+
+const WebSocket = require('ws');
+
+// Create a new WebSocket server
+const server = new WebSocket.Server({ port: 9999 });
+
+// Listen for connection events
+server.on('connection', function(socket) {
+  // Handle incoming messages from the client
+  socket.on('message', function(msg) {
+    // Log the message to the console
+    console.log('Received: ' + msg);
+    // Echo the message back to the client
+    socket.send('Echo: ' + msg);
   });
-
-  ws.send('something');
+  // Send a welcome message to the client
+  socket.send('Hello, WebSocket!');
 });
