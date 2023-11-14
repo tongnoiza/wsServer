@@ -37,7 +37,30 @@
 const WebSocket = require('ws');
 
 // Create a new WebSocket server
-const server = new WebSocket.Server({ port: 9999 });
+const server = new WebSocket.Server({ noServer: true });
+
+
+server.on('upgrade', function (request, socket, head) {
+    socket.on('error', onSocketError);
+  
+    console.log('Parsing session from request...');
+  
+    sessionParser(request, {}, () => {
+      if (!request.session.userId) {
+        socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+        socket.destroy();
+        return;
+      }
+  
+      console.log('Session is parsed!');
+  
+      socket.removeListener('error', onSocketError);
+  
+      wss.handleUpgrade(request, socket, head, function (ws) {
+        wss.emit('connection', ws, request);
+      });
+    });
+  });
 
 // Listen for connection events
 server.on('connection', function(socket) {
