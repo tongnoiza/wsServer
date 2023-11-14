@@ -5,19 +5,21 @@ const app = express();
 
 // Set up a headless websocket server that prints any
 // events that come in.
+app.get('/ws',(req,res)=>{
 const wsServer = new ws.Server({noServer:true});
   // console.log(wsServer);/
 wsServer.on("connection", (socket) => {
   console.log("connected ");
 
-  socket.on("message",async (message) => {
+  socket.on("message",(message) => {
     console.log(message +'');
     for (let i = 0; i <10; i++) {
-      await socket.send("message+ testconn ");
+      socket.send("message+ testconn ");
     }
-  
   });
+})
 
+res.sendStatus(200).end()
   // socket.on()
 });
 // wsServer.on('message', sc =>{
