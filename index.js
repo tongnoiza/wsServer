@@ -20,25 +20,16 @@
 //   });
 // });
 
-const express = require('express');
-const ws = require('ws');
+import { WebSocketServer } from 'ws';
 
-const app = express();
+const wss = new WebSocketServer({ port: 5000 });
 
-// Set up a headless websocket server that prints any
-// events that come in.
-const wsServer = new ws.Server({ noServer: true });
-wsServer.on('connection', socket => {
-  socket.on('message', message => console.log(message));
-});
+wss.on('connection', function connection(ws) {
+  ws.on('error', console.error);
 
-// `server` is a vanilla Node.js HTTP server, so use
-// the same ws upgrade process described here:
-// https://www.npmjs.com/package/ws#multiple-servers-sharing-a-single-https-server
-const server = app.listen(3000);
-server.on('upgrade', (request, socket, head) => {
-  wsServer.handleUpgrade(request, socket, head, socket => {
-    wsServer.emit('connection', socket, request);
+  ws.on('message', function message(data) {
+    console.log('received: %s', data);
   });
-});
 
+  ws.send('something');
+});
