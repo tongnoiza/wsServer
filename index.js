@@ -18,4 +18,11 @@ server.on('connection', function(socket) {
   socket.on('close', function() {
     sockets = sockets.filter(s => s !== socket);
   });
+  server.on('upgrade', (request, socket, head) => {
+  wsServer.handleUpgrade(request, socket, head, socket => {
+    wsServer.emit('connection', socket, request);
+  });
 });
+});
+
+
