@@ -9,9 +9,10 @@ const wsServer = new ws.Server({ noServer: true });
 wsServer.on('connection', socket => {
     console.log('connected ');
   socket.on('message', message =>{
-    console.log(message);
-  socket.send(message)
+    console.log(message+'');
+  socket.send(message+'')
 });
+// socket.on()
 })
 
 // `server` is a vanilla Node.js HTTP server, so use
