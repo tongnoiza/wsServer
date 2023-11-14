@@ -10,10 +10,15 @@ wsServer.on('connection', socket => {
     console.log('connected ');
   socket.on('message', message =>{
     console.log(message+'');
-  socket.send(message+'')
+    socket.send('message+ testconn ')
 });
+
 // socket.on()
 })
+// wsServer.on('message', sc =>{
+//     console.log({sc});
+// sc.send('test')
+// })
 
 // `server` is a vanilla Node.js HTTP server, so use
 // the same ws upgrade process described here:
