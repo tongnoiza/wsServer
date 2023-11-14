@@ -7,6 +7,7 @@ const app = express();
 // events that come in.
 const wsServer = new ws.Server({ noServer: true });
 wsServer.on('connection', socket => {
+    console.log('connected ');
   socket.on('message', message => console.log(message));
 });
 
@@ -19,3 +20,4 @@ server.on('upgrade', (request, socket, head) => {
     wsServer.emit('connection', socket, request);
   });
 });
+// app.listen(3005);
