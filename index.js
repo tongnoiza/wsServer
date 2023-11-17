@@ -29,11 +29,13 @@ expressWs(app)
 app.ws('/echo', (ws, req) => {
 
     ws.on('connection', function (connection) {
-        //...
+      connection.on('message',msg =>{
+        connection.send(msg)
+      })
     })
 
     ws.on('close', function () {
-        //...
+   console.log('cls ')
     })
 })
 
