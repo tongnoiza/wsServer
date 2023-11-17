@@ -19,27 +19,13 @@
 //   });
 // });
 
+const WebSocket = require('ws');
 
-var express = require('express')
-var expressWs = require('express-ws')
+const ws_server = new WebSocket.Server({ port: 81 });
 
-var app = express()
-expressWs(app)
-
-app.ws('/echo', (ws, req) => {
-
-    ws.on('connection', function (connection) {
-      connection.on('message',msg =>{
-        connection.send(msg)
-      })
-    })
-
-    ws.on('close', function () {
-   console.log('cls ')
-    })
-})
-
-app.use(express.static('public'))
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!')
-})
+ws_server.on('connection', function connection(ws) {
+    console.log("A client connected");
+    ws.on('message', function incoming(message) {
+        ws.send('Hi, you sent me ' + message);
+    });
+});
