@@ -19,13 +19,15 @@
 //   });
 // });
 
-const WebSocket = require('ws');
-const p = process.env.port | 25000
-const ws_server = new WebSocket.Server({ port: p });
-console.log({p});
-ws_server.on('connection', function connection(ws) {
-    console.log("A client connected");
-    ws.on('message', function incoming(message) {
-        ws.send('Hi, you sent me ' + message);
-    });
+import { WebSocketServer } from 'ws';
+let port = process.env.port | 5000
+console.debug(`running at port ${port}`)
+const wss = new WebSocketServer({ port: port});
+
+wss.on('connection', function connection(ws) {
+  ws.on('message', function message(data) {
+    console.log('received: %s', data);
+  });
+
+  ws.send('something');
 });
