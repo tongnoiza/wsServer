@@ -20,9 +20,9 @@
 // });
 
 const WebSocket = require('ws');
-
-const ws_server = new WebSocket.Server({ port: 81 });
-
+const p = process.env.port | 25000
+const ws_server = new WebSocket.Server({ port: p });
+console.log({p});
 ws_server.on('connection', function connection(ws) {
     console.log("A client connected");
     ws.on('message', function incoming(message) {
