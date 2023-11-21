@@ -1,9 +1,8 @@
 const WebSocket = require('ws');
-var cors = require('cors')
 const server = new WebSocket.Server({
   port:80
 });
-cors()
+
 let sockets = [];
 server.on('connection', function(socket) {
   sockets.push(socket);
