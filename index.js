@@ -4,7 +4,7 @@
 
 // });
 
-// let sockets = [];
+let sockets = [];
 // server.on('connection', function(socket) {
 //   sockets.push(socket);
 //   // When you receive a message, send that message to every socket.
@@ -29,11 +29,13 @@ const wss1 = new WebSocketServer({port:3009});
 
 
 wss1.on('connection', function connection(ws) {
+  sockets.push(ws);
+  console.log({ws});
   ws.on('error', console.error);
     ws.on('message', function(msg) {
     msg+=''
     console.debug({msg})
-    sockets.forEach(s => s.send(msg));
+    // sockets.forEach(s => s.send(msg));
   });
 
   // ...
@@ -52,4 +54,4 @@ server.on('upgrade', function upgrade(request, socket, head) {
   }
 });
 
-server.listen(80);
+server.listen(5000);
