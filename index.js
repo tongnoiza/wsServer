@@ -25,7 +25,8 @@ import { parse } from 'url';
 import { WebSocketServer } from 'ws';
 
 const server = createServer();
-const wss1 = new WebSocketServer({ noServer: true });
+const wss1 = new WebSocketServer({port:3009});
+
 
 wss1.on('connection', function connection(ws) {
   ws.on('error', console.error);
@@ -51,4 +52,4 @@ server.on('upgrade', function upgrade(request, socket, head) {
   }
 });
 
-server.listen(8080);
+server.listen(80);
