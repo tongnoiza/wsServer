@@ -3,7 +3,7 @@ var cors = require('cors')
 const server = new WebSocket.Server({
   port:80
 });
-app.use(cors())
+cors()
 let sockets = [];
 server.on('connection', function(socket) {
   sockets.push(socket);
