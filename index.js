@@ -1,8 +1,9 @@
 const WebSocket = require('ws');
+const port = process.env.port | 3001
 const server = new WebSocket.Server({
-  port:3001,
+  port:port,
 });
-
+console.log(`running at ${port}`);
 let sockets = [];
 server.on('connection', function(socket) {
   sockets.push(socket);
