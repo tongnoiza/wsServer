@@ -1,20 +1,25 @@
-const WebSocket = require('ws');
-const port = process.env.port | 3001
-const server = new WebSocket.Server({
-  port:port,
-});
-console.log(`running at ${port}`);
-let sockets = [];
-server.on('connection', function(socket) {
-  sockets.push(socket);
-  // When you receive a message, send that message to every socket.
-  socket.on('message', function(msg) {
-    msg+=''
-    console.debug({msg})
-    sockets.forEach(s => s.send(msg));
-  });
+const express = require('express')
+const multer  = require('multer')
+var fs = require('fs');
+const upload = multer({ dest: 'uploads/' })
+const cors = require('cors')
+let app = express()
+app.use(cors())
 
-  socket.on('close', function() {
-    sockets = sockets.filter(s => s !== socket);
-  });
-});
+fs.mkdir('img',(x)=>{
+  console.log(x);
+})
+app.post('/',upload.array('file'),(req,res)=>{
+ let f =  fs.readFileSync(req.files[0].path)
+  console.log(req.files[0]);
+  fs.writeFileSync("./img/"+req.files[0].originalname, f);
+  res.send(req.file)
+})
+
+app.post('/a',(req,res)=>{
+  res.send("aaaaa")
+})
+
+app.listen(3001,()=>{
+  console.log('running ');
+})
