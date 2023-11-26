@@ -13,9 +13,15 @@ app.post('/',upload.array('file'),(req,res)=>{
  let f =  fs.readFileSync(req.files[0].path)
   console.log(req.files[0]);
   fs.writeFileSync("./img/"+req.files[0].originalname, f);
-  res.send(req.file)
+  res.send(req.files[0])
 })
-
+app.get('/download',(req,res)=>{
+ let q = req.query.filename
+ console.log('filename ',q);
+ let file =  fs.readFileSync('./img/'+q)
+ console.log('file ',file);
+res.download('./img/'+q)
+})
 app.post('/a',(req,res)=>{
   res.send("aaaaa")
 })
