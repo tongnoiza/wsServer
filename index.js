@@ -16,7 +16,7 @@ wss.on("connection", function connection(ws) {
   console.log("เชื่อมต่อ");
   ws.on("error", console.error);
 
-  ws.on("message", function message(data) {
+  ws.on("message", function message(data, isBinary) {
     console.log("received: %s", data);
     wss.clients.forEach((client)=> {
       if (client.readyState === WebSocket.OPEN) {
