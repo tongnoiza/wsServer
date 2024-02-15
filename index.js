@@ -1,31 +1,25 @@
-const express = require('express')
-const multer  = require('multer')
-var fs = require('fs');
-const upload = multer({ dest: 'uploads/' })
-const cors = require('cors')
-let app = express()
-app.use(cors())
+"use strict";
+import express from "express";
+import cors from "cors";
 
-fs.mkdir('img',(x)=>{
-  console.log(x);
-})
-app.post('/',upload.array('file'),(req,res)=>{
- let f =  fs.readFileSync(req.files[0].path)
-  console.log(req.files[0]);
-  fs.writeFileSync("./img/"+req.files[0].originalname, f);
-  res.send(req.files[0])
-})
-app.get('/download',(req,res)=>{
- let q = req.query.filename
- console.log('filename ',q);
- let file =  fs.readFileSync('./img/'+q)
- console.log('file ',file);
-res.download('./img/'+q)
-})
-app.post('/a',(req,res)=>{
-  res.send("aaaaa")
-})
+import { WebSocketServer } from "ws";
+let app = express();
+app.use(cors());
 
-app.listen(3001,()=>{
-  console.log('running ');
-})
+const wss = new WebSocketServer({ port: 443 });
+app.on("upgrade", (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, (ws) => {
+    wss.emit("connection", ws, request);
+  });
+});
+wss.on("connection", function connection(ws) {
+  console.log("เชื่อมต่อ");
+  ws.on("error", console.error);
+
+  ws.on("message", function message(data) {
+    console.log("received: %s", data);
+    ws.send("something " + data);
+  });
+});
+
+
