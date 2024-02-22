@@ -2,7 +2,6 @@
 import express from "express";
 import cors from "cors";
 import WebSocket, { WebSocketServer } from 'ws';
-// import { WebSocketServer } from "ws";
 let app = express();
 app.use(cors());
 
@@ -17,20 +16,14 @@ app.on("upgrade", (request, socket, head) => {
 wss.on("connection", function connection(ws) {
   console.log("เชื่อมต่อ");
   ws.on("error", console.error);
-  // ws.on("message", function message(data) {
-  //   console.log("received: %s", data);
-  //   ws.send("something " + data);
-  // });
+
   ws.on('message', function message(data, isBinary) {
     wss.clients.forEach(function each(client) {
       if (client.readyState === WebSocket.OPEN) {
+        console.log("ข้อความ "+data);
         client.send(data, { binary: isBinary });
       }
     });
   });
 });
-// wss.on("message", function message(data) {
-//   console.log("received: %s", data);
-//   ws.send("something " + data);
-// });
 
