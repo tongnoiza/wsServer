@@ -1,26 +1,15 @@
-import express from 'express'
-let app = express();
-import expressWs from 'express-ws'
-import cors from 'cors'
-app.use(cors())
-expressWs(app);
-app.use(function (req, res, next) {
-  console.log('middleware');
-  req.testing = 'testing';
-  return next();
-});
+import WebSocket, { WebSocketServer } from 'ws';
 
-app.get('/', function(req, res, next){
-  console.log('get route', req.testing);
-  res.end();
-});
+const wss = new WebSocketServer({ port: 8080 });
 
-app.ws('/', function(ws, req) {
-  ws.on('message', function(msg) {
-    console.log(msg);
-    ws.send("data "+msg)
+wss.on('connection', function connection(ws) {
+  ws.on('error', console.error);
+
+  ws.on('message', function message(data, isBinary) {
+    wss.clients.forEach(function each(client) {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(data, { binary: isBinary });
+      }
+    });
   });
-  console.log('socket', req.testing);
 });
-
-app.listen(443);
