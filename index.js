@@ -6,7 +6,7 @@ wss.on('connection', function connection(ws) {
   ws.on('error', console.error);
 
   ws.on('message', function message(data, isBinary) {
-    console.log('test mcu ',data);
+    console.log('test mcu '+data);
     wss.clients.forEach(function each(client) {
       if (client.readyState === WebSocket.OPEN) {
       
