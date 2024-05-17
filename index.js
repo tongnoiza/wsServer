@@ -1,12 +1,12 @@
-import mosca from "mosca";
-const setting = {
-  port: 1883,
-  http: {
-    port: 8883,
-  },
-};
-const server = mosca.Server(setting)
-// server.on('ready',setup)
-server.on('clientconnected',()=>{
-  console.log('cliend connect');
-})
+import WebSocket, { WebSocketServer } from 'ws';
+const wss = new WebSocketServer({ port: 8080 });
+wss.on('connection', function connection(ws) {
+  ws.on('error', console.error);
+
+  ws.on('message', function message(data, isBinary) {
+    console.log('test mcu '+data);
+    wss.clients.forEach(function each(client) {
+        client.send(data, { binary: isBinary });
+    });
+  });
+});
